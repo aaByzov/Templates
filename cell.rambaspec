@@ -1,0 +1,12 @@
+# Template information section
+name: "cell"
+summary: "UICollectionViewCell & cellViewModel"
+author: "Alexandr Byzov"
+version: "1.0"
+license: "MIT"
+
+# The declarations for code files
+code_files:
+- {name: Cell/Cell.swift, path: Code/Cell/Cell.swift.liquid}
+- {name: Cell/CellVM.swift, path: Code/Cell/CellVM.swift.liquid}
+

@@ -7,7 +7,10 @@
 //
 
 
-@interface {{ prefix }}{{ module_info.name }}ViewModel : NSObject
+class {{ prefix }}{{ module_info.name }}Router: BaseRouter {
 
-
-@end
+	@objc func showDetail() {
+        	let vc = DetailViewController()
+        	viewController?.navigationController?.pushViewController(vc, animated: true)
+	}	
+}

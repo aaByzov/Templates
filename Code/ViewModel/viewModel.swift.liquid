@@ -1,0 +1,42 @@
+//
+//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import RxSwift
+import Action
+
+protocol {{ prefix }}{{ module_info.name }}ViewModel {
+    var items: [Any] { get set }
+    var loadAction: Action<(), [Any]>! { get set }
+    func cellViewModel(indexPath: IndexPath) -> Any
+}
+
+class {{ prefix }}{{ module_info.name }}ViewModelImp: {{ prefix }}{{ module_info.name }}ViewModel {
+
+    var items = [Any]()
+    var loadAction: Action<(), [Any]>!
+    
+    init() {
+        configure()
+    }
+    
+    private var service: ServiceProtocol!
+    
+    private func configure() {
+        self.service = Service()
+        
+        loadAction = Action(workFactory: { [unowned self] in
+            return self.service.comboList()
+        })
+    }
+    
+    func cellViewModel(indexPath: IndexPath) -> Any {
+        let item = items[indexPath.row]
+
+        return {{ prefix }}{{ module_info.name }}CellVM(title: item.title, image: items.image)
+    }
+}

@@ -1,0 +1,10 @@
+# Template information section
+name: "view"
+summary: "Base UIView"
+author: "Alexandr Byzov"
+version: "1.0"
+license: "MIT"
+
+# The declarations for code files
+code_files:
+- {name: View.swift, path: Code/View/View.swift.liquid}

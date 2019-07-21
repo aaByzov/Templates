@@ -1,0 +1,12 @@
+# Template information section
+name: "service"
+summary: "api service"
+author: "Alexandr Byzov"
+version: "1.0"
+license: "MIT"
+
+# The declarations for code files
+code_files:
+- {name: NetworkRouter.swift, path: Code/Service/NetworkRouter.swift.liquid}
+- {name: Service.swift, path: Code/Service/Service.swift.liquid}
+
