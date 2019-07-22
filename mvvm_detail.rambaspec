@@ -1,0 +1,13 @@
+# Template information section
+name: "mvvm_detail"
+summary: "MVVM"
+author: "Alexandr Byzov"
+version: "1.0"
+license: "MIT"
+
+# The declarations for code files
+code_files:
+- {name: Router.swift, path: Code/Router/router.swift.liquid}
+- {name: View.swift, path: Code/View/ViewDetail.swift.liquid}
+- {name: ViewController.swift, path: Code/ViewController/viewControllerDetail.swift.liquid}
+- {name: ViewModel.swift, path: Code/ViewModel/ViewModelDetail.swift.liquid}

@@ -6,11 +6,12 @@
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
 //
 
+import UIKit
 
 class {{ prefix }}{{ module_info.name }}Router: BaseRouter {
 
 	@objc func showDetail() {
-        	let vc = DetailViewController()
+        	let vc = UIViewController()
         	viewController?.navigationController?.pushViewController(vc, animated: true)
 	}	
 }

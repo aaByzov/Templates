@@ -1,0 +1,55 @@
+//
+//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+import RxSwift
+
+class {{ prefix }}{{ module_info.name }}ViewController: UIViewController {
+	
+	private weak var imageView: UIImageView!    
+	private weak var titleLabel: UILabel!
+	private weak var descrLabel: UILabel!
+	private weak var doneButton: UIButton!
+
+	private var viewModel: {{ prefix }}{{ module_info.name }}ViewModel!
+	private var router: {{ prefix }}{{ module_info.name }}Router!
+
+	private var bag = DisposeBag()
+    	
+	convenience init(item: Any) {
+		self.init()
+		viewModel = {{ prefix }}{{ module_info.name }}ViewModelImp(item: item)
+	}
+
+	override func loadView() {
+		let sView = {{ prefix }}{{ module_info.name }}View()
+		imageView = sView.imageView
+		titleLabel = sView.titleLabel
+		descrLabel = sView.descrLabel
+		doneButton = sView.doneButton
+		self.view = sView
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		router = {{ prefix }}{{ module_info.name }}Router(with: self)
+        
+		title = ""
+		let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+		navigationItem.backBarButtonItem = back
+
+
+		doneButton.addTarget(self, action: #selector(showDetail), for: .touchUpInside)
+
+	}
+
+	@objc func showDetail() {
+		print("tap")
+	}
+}
