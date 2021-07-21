@@ -1,0 +1,81 @@
+//
+//  {{ prefix }}{{ module_info.file_name }}
+//
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+import AsyncDisplayKit
+
+class {{ prefix }}{{ module_info.name }}Cell: ASCellNode, BaseViewProtocol {
+	
+	override init() {
+		super.init()
+		configureViews()
+	}
+
+	private var container: ASDisplayNode!
+	private var imageNode: ASNetworkImageNode!
+	private var titleLabel: ASTextNode!
+    
+	private func configureViews() {
+        	
+		selectionStyle = .none
+		automaticallyManagesSubnodes = true
+        
+		container = { let i = ASDisplayNode()
+			i.backgroundColor = .white
+			i.cornerRadius = 20
+			return i
+		}()
+
+		imageNode = { let i = ASNetworkImageNode()
+			i.clipsToBounds = true
+			i.placeholderFadeDuration = 0.3
+			i.placeholderEnabled = true
+			i.shouldCacheImage = true
+			i.defaultImage = Asset.logoPlaceholder.image
+			i.contentMode = .scaleAspectFill
+			i.shouldRenderProgressImages = true
+			return i
+		}()
+        
+		titleLabel = { let i = ASTextNode()
+			i.placeholderFadeDuration = 0.3
+			i.placeholderEnabled = true
+			i.maximumNumberOfLines = 2
+			return i
+		}()
+	}
+    
+	func configure(viewModel vm: Any?) {
+		guard let viewModel = vm as? MenuVerticalCellVM else { return }
+        
+		titleLabel.attributedText = viewModel.title.attributed(font: .boldFont(size: 16), color: .textColor)
+		imageNode.url = viewModel.imageUrl
+	}
+
+	override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+        
+		titleLabel.style.flexShrink = 1000
+        
+		let horizontalStackSpec = ASStackLayoutSpec(direction: .horizontal, spacing: 14, justifyContent: .start, alignItems: .center, children: [imageNode, titleLabel])
+        
+		let horizontalInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12), child: horizontalStackSpec)
+        
+		let containerBgdSpec = ASBackgroundLayoutSpec(child: horizontalInsetSpec, background: container)
+        
+		return ASInsetLayoutSpec(insets: UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 20), child: containerBgdSpec)
+	}
+    
+	override var isHighlighted: Bool {
+		willSet(value) {
+			self.view.transform = value ? CGAffineTransform.identity : CGAffineTransform(scaleX: 0.96, y: 0.96)
+			UIView.animate(withDuration: 0.12, delay: 0, options: .curveLinear, animations: {
+				self.view.transform = value ? CGAffineTransform(scaleX: 0.96, y: 0.96) : CGAffineTransform.identity
+			})
+		}
+	}
+}

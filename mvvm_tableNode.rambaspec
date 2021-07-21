@@ -1,0 +1,18 @@
+name: "mvvm"
+summary: "MVVM"
+author: "Alexandr Byzov"
+version: "1.0"
+license: "MIT"
+
+code_files:
+- {name: Cell/CellNode.swift, path: Code/Cell/CellNode.swift.liquid}
+- {name: Cell/CellVM.swift, path: Code/Cell/CellVM.swift.liquid}
+- {name: Router.swift, path: Code/Router/routerList.swift.liquid}
+- {name: View.swift, path: Code/View/ViewTableNode.swift.liquid}
+- {name: ViewController.swift, path: Code/ViewController/ViewControllerTableNode.swift.liquid}
+- {name: ViewModel.swift, path: Code/ViewModel/ViewModelTable.swift.liquid}
+
+test_files:
+
+dependencies:
+- Typhoon

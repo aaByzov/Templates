@@ -1,6 +1,4 @@
-//
-//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
-//  {{ module_info.project_name }}
+
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
@@ -21,9 +19,9 @@ class {{ prefix }}{{ module_info.name }}ViewController: UIViewController {
 
 	private var bag = DisposeBag()
     	
-	convenience init(item: Any) {
+	convenience init(viewModel: {{ prefix }}{{ module_info.name }}ViewModel) {
 		self.init()
-		viewModel = {{ prefix }}{{ module_info.name }}ViewModelImp(item: item)
+		self.viewModel = viewModel
 	}
 
 	override func loadView() {
@@ -41,8 +39,7 @@ class {{ prefix }}{{ module_info.name }}ViewController: UIViewController {
 		router = {{ prefix }}{{ module_info.name }}Router(with: self)
         
 		title = ""
-		let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-		navigationItem.backBarButtonItem = back
+		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
 
 		doneButton.addTarget(self, action: #selector(showDetail), for: .touchUpInside)

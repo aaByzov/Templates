@@ -7,6 +7,6 @@ license: "MIT"
 
 # The declarations for code files
 code_files:
-- {name: Cell/Cell.swift, path: Code/Cell/Cell.swift.liquid}
-- {name: Cell/CellVM.swift, path: Code/Cell/CellVM.swift.liquid}
+- {name: Cell/Cell.swift, path: ../Code/Cell/Cell.swift.liquid}
+- {name: Cell/CellVM.swift, path: ../Code/Cell/CellVM.swift.liquid}
 

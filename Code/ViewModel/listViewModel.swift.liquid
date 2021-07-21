@@ -1,0 +1,25 @@
+
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+
+class {{ prefix }}{{ module_info.name }}ListVM: HorizontalListVM {
+
+    var items: [Codable] = [MItem]()
+    
+    var cellClass: (UICollectionViewCell & BaseActionViewProtocol).Type! = {{ prefix }}{{ module_info.name }}Cell.self
+    
+    func size(for indexPath: IndexPath) -> CGSize {
+        let width = UIScreen.main.bounds.width - 40
+        let height = {{ prefix }}{{ module_info.name }}Cell.height(for: width, viewModel: nil)
+        return .init(width: width, height: height)
+    }
+    
+    func cellViewModel(indexPath: IndexPath) -> Any? {
+        let item = items[indexPath.row] as! MItem
+        return {{ prefix }}{{ module_info.name }}CellVMImp(item)
+    }
+}

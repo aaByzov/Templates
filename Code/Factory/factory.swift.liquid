@@ -1,0 +1,26 @@
+
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+
+final class {{ prefix }}{{ module_info.name }}Factory: SceneFactory {
+
+	private var item: MItem
+    
+    init(item: MItem) {
+        self.item = item
+    }
+
+	func makeViewModel() -> {{ prefix }}{{ module_info.name }}ViewModel {
+		return  {{ prefix }}{{ module_info.name }}ViewModelImp(
+			item: item
+		)
+	}
+
+	func makeViewController() -> UIViewController {
+        return {{ prefix }}{{ module_info.name }}ViewController(viewModel: self.makeViewModel())
+    }
+}

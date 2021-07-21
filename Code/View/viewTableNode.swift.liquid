@@ -1,15 +1,17 @@
-
+//
+//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
+//
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
 //
 
 import UIKit
+import AsyncDisplayKit
 
 class {{ prefix }}{{ module_info.name }}View: UIView {
 
-	var itemsList: HorizontalListView!
-	var doneButton: UIButton!
+	var tableNode: ASTableNode!
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -22,24 +24,20 @@ class {{ prefix }}{{ module_info.name }}View: UIView {
 	}
     
 	private func configureViews() {
-
-		backgroundColor = .white
+		backgroundColor = .bgColor
         	
-		let layout = UICollectionViewFlowLayout()
-        itemsList = { let i = HorizontalListView(frame: .zero, collectionViewLayout: layout)
-			i.showsVerticalScrollIndicator = false
-			i.backgroundColor = UIColor.clear
+		tableNode = { let i = ASTableNode(style: .plain)
+			i.view.separatorStyle = .none
+			i.view.showsVerticalScrollIndicator = false
+			i.view.backgroundColor = UIColor.clear
 			return i
 		}()
-
-		addSubview(itemsList)
+        
+		addSubnode(tableNode)
 	}
 
 	private func configureConstraits() {
         	
-        itemsList.snp.makeConstraints{
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.left.bottom.right.equalTo(0)
-		}
+		tableNode.frame = UIScreen.main.bounds
 	}
 }

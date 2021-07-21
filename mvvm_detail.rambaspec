@@ -11,3 +11,4 @@ code_files:
 - {name: View.swift, path: Code/View/ViewDetail.swift.liquid}
 - {name: ViewController.swift, path: Code/ViewController/viewControllerDetail.swift.liquid}
 - {name: ViewModel.swift, path: Code/ViewModel/ViewModelDetail.swift.liquid}
+- {name: Factory.swift, path: Code/Factory/Factory.swift.liquid}

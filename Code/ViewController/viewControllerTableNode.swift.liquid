@@ -1,0 +1,90 @@
+//
+//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
+//
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+import RxSwift
+import Action
+import AsyncDisplayKit
+
+class {{ prefix }}{{ module_info.name }}ViewController: UIViewController, MixinSinglePageActor {
+
+	weak var pagedView: UITableView!
+    
+	private weak var tableNode: ASTableNode!
+
+	private var viewModel: {{ prefix }}{{ module_info.name }}ViewModel!
+	private var router: {{ prefix }}{{ module_info.name }}Router!
+
+	var bag = DisposeBag()
+	private var isLoading = false
+	var pagedList: [MockItem]!
+	var loadAction: Action<(), [MockItem]>!
+	var refreshAction: Action<(), [MockItem]>?
+    
+	override func loadView() {
+		let sView = {{ prefix }}{{ module_info.name }}View()
+		tableNode   = sView.tableNode
+		pagedView   = tableNode.view
+		self.view = sView
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		viewModel = {{ prefix }}{{ module_info.name }}ViewModelImp()
+		router = {{ prefix }}{{ module_info.name }}Router(with: self)
+        
+		title = ""
+		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
+		tableNode.delegate = self
+		tableNode.dataSource = self
+
+		loadAction = viewModel.loadAction
+		refreshAction = viewModel.refreshAction
+		configurePageActor()
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		if !isLoading {
+			isLoading = true
+			viewModel.loadAction.execute()
+		}
+	}
+}
+
+extension {{ prefix }}{{ module_info.name }}ViewController: ASTableDataSource, ASTableDelegate {
+    
+	func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
+		return pagedList.count
+	}
+    
+	func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
+		let item = viewModel.cellViewModel(item: pagedList[indexPath.row])
+		return {
+			let node = {{ prefix }}{{ module_info.name }}Cell()
+			node.configure(viewModel: item)
+			return node
+		}
+	}
+    
+	func tableNode(_ tableNode: ASTableNode, constrainedSizeForRowAt indexPath: IndexPath) -> ASSizeRange {
+		let min = CGSize(width: UIScreen.main.bounds.width, height: 124)
+		let max = CGSize(width: UIScreen.main.bounds.width, height: CGFloat.infinity)
+		return ASSizeRange(min: min, max: max)
+	}
+    
+	func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
+		let item = pagedList[indexPath.row]
+        
+		router.showDetail(item: item)
+        
+		tableNode.deselectRow(at: indexPath, animated: true)
+	}
+}

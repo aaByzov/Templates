@@ -1,6 +1,4 @@
-//
-//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
-//  {{ module_info.project_name }}
+
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
@@ -8,11 +6,12 @@
 
 import RxSwift
 
-protocol {{ prefix }}{{ module_info.name }}ServiceProtocol {
-    func getList() -> Observable<[Any]>
+protocol {{ prefix }}{{ module_info.name }}Service {
+
+    func getList() -> Observable<()>
 }
 
-final class {{ prefix }}{{ module_info.name }}Service {
+final class {{ prefix }}{{ module_info.name }}ServiceImp {
     private let apiClient: ApiClient
     private let mapper: MapperProtocol
     init(apiClient: ApiClient = ApiClient(), mapper: MapperProtocol = Mapper()) {
@@ -21,11 +20,11 @@ final class {{ prefix }}{{ module_info.name }}Service {
     }
 }
 
-extension {{ prefix }}{{ module_info.name }}Service: {{ prefix }}{{ module_info.name }}ServiceProtocol {
+extension {{ prefix }}{{ module_info.name }}ServiceImp: {{ prefix }}{{ module_info.name }}Service {
     
-    func getList() -> Observable<[Any]> {
+    func getList() -> Observable<()> {
         let request = {{ prefix }}{{ module_info.name }}NetworkRouter.getList
         return apiClient.load(request: request)
-            .flatMap(mapper.map)
+            .flatMap(mapper.void)
     }
 }

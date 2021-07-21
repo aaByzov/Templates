@@ -1,6 +1,4 @@
-//
-//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
-//  {{ module_info.project_name }}
+
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
@@ -9,6 +7,7 @@
 import Alamofire
 
 enum {{ prefix }}{{ module_info.name }}NetworkRouter: URLRequestConvertible {
+
     case getList
 }
 
@@ -18,28 +17,26 @@ extension {{ prefix }}{{ module_info.name }}NetworkRouter: NetworkRequestParams 
         switch self {
         case . getList:
             return "/list/"
-        @unknown default:
-            return ""
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        @unknown default:
+        default:
             return .get
         }
     }
     
     var parameters: Parameters {
         switch self {
-        @unknown default:
+        default:
             return [:]
         }
     }
     
     var encoding: ParameterEncoding {
         switch self {
-        @unknown default:
+        default:
             return URLEncoding.default
         }
     }

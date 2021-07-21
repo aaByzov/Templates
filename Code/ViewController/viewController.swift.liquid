@@ -1,6 +1,4 @@
-//
-//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
-//  {{ module_info.project_name }}
+
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
@@ -11,68 +9,78 @@ import RxSwift
 
 class {{ prefix }}{{ module_info.name }}ViewController: UIViewController {
 
-	private weak var collectionView: UICollectionView!
+	private weak var itemsList: HorizontalListView!
 	private weak var doneButton: UIButton!
 
 	private var viewModel: {{ prefix }}{{ module_info.name }}ViewModel!
+    private var itemsDS: HorizontalListDS!
 	private var router: {{ prefix }}{{ module_info.name }}Router!
 
 	private var bag = DisposeBag()
+    private var isLoading = false
     
+
+        convenience init(viewModel: {{ prefix }}{{ module_info.name }}ViewModel) {
+		self.init()
+		self.viewModel = viewModel
+	}
+
 	override func loadView() {
 		let sView = {{ prefix }}{{ module_info.name }}View()
-		collectionView = sView.collectionView
-		doneButton = sView.doneButton
+		itemsList   = sView.itemsList
+		doneButton  = sView.doneButton
 		self.view = sView
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		viewModel = {{ prefix }}{{ module_info.name }}ViewModelImp()
 		router = {{ prefix }}{{ module_info.name }}Router(with: self)
         
-		title = ""
-		let back = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-		navigationItem.backBarButtonItem = back
+        navigationItem.title = ""
+		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
-		collectionView.delegate = self
-		collectionView.dataSource = self
-		collectionView.register({{ prefix }}{{ module_info.name }}Cell.self, forCellWithReuseIdentifier: "Cell")
-
-		doneButton.addTarget(self, action: #selector(showDetail), for: .touchUpInside)
-
+        configureItemsList()
+        configureBindings()
 	}
 
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isLoading {
+            isLoading.toggle()
+            viewModel.loadAction.execute()
+        }
+    }
+
+
+    func configureItemsList() {
+        itemsDS = HorizontalListDS(viewModel: viewModel.itemsListVM())
+        itemsDS.bind(with: itemsList)
+        itemsDS.update(items: viewModel.items)
+        itemsDS.cellPressedBlock = {
+            print("item \($0)")
+        }
+    }
+
+    private func configureBindings() {
+        
+        viewModel.loadAction.executing.subscribe(onNext: { [unowned self] in
+            self.showHUD($0)
+        }).disposed(by: bag)
+        
+        viewModel.loadAction.errors.subscribe(onNext: { [unowned self] in
+            self.errorHandler(error: $0)
+        }).disposed(by: bag)
+        
+        viewModel.loadAction.elements.subscribe(onNext: { [unowned self] in
+            self.itemsDS.update(items: $0)
+        }).disposed(by: bag)
+    }
+    
+    
+    // MARK: - Actions
 	@objc func showDetail() {
 		print("tap")
-	}
-}
-
-extension {{ prefix }}{{ module_info.name }}ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return viewModel.items.count
-	}
-    
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! UICollectionViewCell & BaseCellProtocol
-		cell.configure(viewModel: viewModel.cellViewModel(indexPath: indexPath))
-		return cell
-	}
-    
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		let layout: UICollectionViewFlowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-		let offset = layout.sectionInset.left + layout.sectionInset.right
-		let width = collectionView.bounds.size.width - offset
-		return CGSize(width: width, height: 100)
-	}
-    
-	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		let item = viewModel.items[indexPath.row]
-        
-	
-        
-		collectionView.deselectItem(at: indexPath, animated: true)
-	}
+    }
 }

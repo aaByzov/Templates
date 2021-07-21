@@ -1,6 +1,4 @@
-//
-//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
-//  {{ module_info.project_name }}
+
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
@@ -9,9 +7,9 @@
 import UIKit
 import RxSwift
 
-class {{ prefix }}{{ module_info.name }}Cell: UICollectionViewCell, BaseCellProtocol {
+class {{ prefix }}{{ module_info.name }}Cell: UICollectionViewCell, BaseActionViewProtocol {
 	
-	var delegate: BaseCellActionDelegate?
+	var delegate: BaseViewActionDelegate?
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -36,16 +34,16 @@ class {{ prefix }}{{ module_info.name }}Cell: UICollectionViewCell, BaseCellProt
 		}()
         
 		imageView = { let i = UIImageView()
-			i.contentMode = .center
+			i.contentMode = .scaleAspectFill
 			i.clipsToBounds = true
 			return i
 		}()
                 
 		titleLabel = { let i = UILabel()
-			i.font = .mediumFont(size: 16)
-			i.textColor = .textColor
+			i.font = .systemFont(ofSize: 16)
+			i.textColor = .black
 			return i
-        	}()
+        }()
 
 
 		contentView.addSubview(stackView)
@@ -59,7 +57,12 @@ class {{ prefix }}{{ module_info.name }}Cell: UICollectionViewCell, BaseCellProt
 		stackView.snp.makeConstraints{ (make) in
 			make.edges.equalTo(0)
 		}
+        
+        imageView.snp.makeConstraints{ (make) in
+            make.width.equalTo(120)
+        }
 	}
+
 
 	override func prepareForReuse() {
 		super.prepareForReuse()
@@ -67,15 +70,14 @@ class {{ prefix }}{{ module_info.name }}Cell: UICollectionViewCell, BaseCellProt
 	}
     
 	func configure(viewModel vm: Any?) {
-		let viewModel: {{ prefix }}{{ module_info.name }}CellVM = vm as! {{ prefix }}{{ module_info.name }}CellVM
+        guard let viewModel = vm as? {{ prefix }}{{ module_info.name }}CellVM else { return }
         
 		titleLabel.text = viewModel.title
         
-		imageView.kf.setImage(with: viewModel.imageUrl,
-                              	      placeholder: nil,
-                              	options: [
-					.forceRefresh,
-					.transition(.fade(1))
-				])
+        imageView.setImage(with: viewModel.imageUrl, imageSize: .init(width: 120, height: 120), cornerRadius: 30)
+    }
+
+    static func height(for width: CGFloat, viewModel: Any?) -> CGFloat {
+        return 120
     }
 }

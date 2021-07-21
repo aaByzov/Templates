@@ -1,6 +1,4 @@
-//
-//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
-//  {{ module_info.project_name }}
+
 //
 //  Created by {{ developer.name }} on {{ date }}.
 //  Copyright {{ year }} {{ developer.company }}. All rights reserved.
@@ -28,36 +26,38 @@ class {{ prefix }}{{ module_info.name }}View: UIView {
     
 	
 	private func configureViews() {
-        	
-	imageView = { let i = UIImageView()
-            i.contentMode = .scaleAspectFit
-            i.clipsToBounds = true
-            return i
-        }()
 
-	titleLabel = { let i = UILabel()
-            i.font = .mediumFont(size: 18)
-            i.textColor = .white
-            i.numberOfLines = 1
-            return i
-        }()
+        	backgroundColor = .white
+
+		imageView = { let i = UIImageView()
+			i.contentMode = .scaleAspectFit
+			i.clipsToBounds = true
+			return i
+		}()
+
+		titleLabel = { let i = UILabel()
+			i.font = .systemFont(ofSize: 18)
+			i.textColor = .white
+			i.numberOfLines = 1
+			return i
+		}()
         
-        descrLabel = { let i = UILabel()
-            i.font = .regularFont(size: 12)
-            i.textColor = UIColor(white: 1, alpha: 0.7)
-            i.numberOfLines = 3
-            return i
-        }()
+		descrLabel = { let i = UILabel()
+			i.font = .regularFont(size: 12)
+			i.textColor = UIColor(white: 1, alpha: 0.7)
+			i.numberOfLines = 3
+			return i
+		}()
 
-	doneButton = { let i = UIButton()
-            return i
-	}()
+		doneButton = { let i = UIButton()
+			return i
+		}()
 		
 
-	addSubview(imageView)
-	addSubview(titleLabel)
-	addSubview(descrLabel)
-	addSubview(doneButton)
+		addSubview(imageView)
+		addSubview(titleLabel)
+		addSubview(descrLabel)
+		addSubview(doneButton)
 	}
 
 	private func configureConstraits() {

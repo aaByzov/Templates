@@ -1,0 +1,46 @@
+//
+//  {{ prefix }}{{ module_info.name }}{{ module_info.file_name }}
+//
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import RxSwift
+import Action
+
+protocol {{ prefix }}{{ module_info.name }}ViewModel {
+
+    var loadAction: Action<(), [MockItem]>! { get }
+    var refreshAction: Action<(), [MockItem]>! { get }
+    
+    func cellViewModel(item: MockItem) -> Any
+}
+
+class {{ prefix }}{{ module_info.name }}ViewModelImp: {{ prefix }}{{ module_info.name }}ViewModel {
+
+    var loadAction: Action<(), [MockItem]>!
+    var refreshAction: Action<(), [MockItem]>!
+    
+    init(service: MockServiceProtocol = MockService()) {
+        self.service = service
+        configure()
+    }
+    
+    private var service: MockServiceProtocol!
+    
+    private func configure() {
+        
+        loadAction = Action(workFactory: { [unowned self] in
+            return self.service.getItems()
+        })
+        
+        refreshAction = Action(workFactory: { [unowned self] in
+            return self.service.getItems()
+        })
+    }
+    
+    func cellViewModel(item: MockItem) -> Any {
+        return MenuVerticalCellVM(item)
+    }
+}
